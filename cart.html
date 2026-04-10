@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>My Order - Outfit Store</title>
+<style>
+    body {
+        margin: 0;
+        min-height: 100vh;
+        color: #fff;
+        font-family: Arial, sans-serif;
+        background-image: url('https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1600&auto=format&fit=crop&q=80');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-color: rgba(0, 0, 0, 0.78);
+        background-blend-mode: multiply;
+    }
+    nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: rgba(26, 26, 26, 0.95);
+        padding: 10px 20px;
+        box-shadow: 0 0 10px #0ff;
+    }
+    .nav-links a {
+        color: #0ff;
+        margin-right: 15px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    .nav-links a:hover { text-decoration: underline; }
+    .user-info {
+        color: #0ff;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .logout-btn {
+        background: transparent;
+        border: 1px solid #f0f;
+        color: #f0f;
+        padding: 5px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: bold;
+    }
+    .logout-btn:hover { background: #f0f; color: #000; }
+    h2 { text-align: center; margin-top: 30px; color: #0ff; text-shadow: 0 0 10px #0ff; }
+    .cart-items {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    .cart-item {
+        background-color: rgba(26, 26, 26, 0.9);
+        border: 2px solid #0ff;
+        padding: 15px;
+        border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 0 8px rgba(0,255,255,0.3);
+    }
+    .cart-item .item-name { font-weight: bold; }
+    .cart-item .item-price { color: #0ff; font-weight: bold; }
+    .remove-btn {
+        background: transparent;
+        border: 1px solid #f55;
+        color: #f55;
+        padding: 4px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+        width: auto;
+        margin: 0;
+    }
+    .remove-btn:hover { background: #f55; color: #fff; }
+    #total {
+        margin: 30px;
+        font-size: 1.5em;
+        text-align: center;
+        text-shadow: 0 0 8px #0ff;
+        font-weight: bold;
+    }
+    .empty-msg {
+        text-align: center;
+        color: #aaa;
+        font-size: 1.2em;
+        margin: 40px 0;
+    }
+    .action-btns {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 40px;
+    }
+    button.main-btn {
+        background-color: #0ff;
+        border: none;
+        padding: 14px 30px;
+        border-radius: 4px;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 1.1em;
+        transition: all 0.3s;
+    }
+    button.main-btn:hover { background-color: #0cc; box-shadow: 0 0 15px #0ff; }
+    button.clear-btn {
+        background: transparent;
+        border: 2px solid #f55;
+        color: #f55;
+        padding: 14px 30px;
+        border-radius: 4px;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 1.1em;
+        transition: all 0.3s;
+    }
+    button.clear-btn:hover { background: #f55; color: #fff; }
+    .order-meta {
+        max-width: 800px;
+        margin: 0 auto 20px;
+        background: rgba(26,26,26,0.9);
+        border: 1px solid #0ff3;
+        border-radius: 8px;
+        padding: 16px 20px;
+    }
+    .order-meta h3 { color: #0ff; margin: 0 0 12px; font-size: 1em; }
+    .order-meta input, .order-meta textarea {
+        width: 90%;
+        padding: 10px;
+        margin: 6px 0;
+        border: 1px solid #0ff;
+        border-radius: 4px;
+        background: #222;
+        color: #fff;
+        font-size: 14px;
+        font-family: Arial, sans-serif;
+    }
+    .order-meta input:focus, .order-meta textarea:focus { outline: none; box-shadow: 0 0 6px #0ff; }
+</style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-links">
+        <a href="shoes.html">Shoes</a>
+        <a href="clothes.html">Clothes</a>
+        <a href="homepage.html">Homepage</a>
+    </div>
+    <div class="user-info">
+        <span id="welcomeMsg"></span>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+</nav>
+
+<h2>🛒 My Order</h2>
+
+<div class="cart-items" id="cartItems"></div>
+
+<div id="total">Total: ksh0</div>
+
+<!-- Delivery details form -->
+<div class="order-meta" id="orderMeta" style="display:none;">
+    <h3>📦 Delivery Details</h3>
+    <input type="text"  id="deliveryName"  placeholder="Your full name" />
+    <input type="tel"   id="deliveryPhone" placeholder="Phone number (M-Pesa)" />
+    <input type="text"  id="deliveryAddr"  placeholder="Delivery address / town" />
+    <textarea id="deliveryNote" rows="2" placeholder="Any special notes (optional)"></textarea>
+</div>
+
+<div class="action-btns">
+    <button class="main-btn"  onclick="submitOrder()">✅ Submit Order</button>
+    <button class="clear-btn" onclick="clearCart()">🗑️ Clear Cart</button>
+</div>
+
+<script>
+// ─── SESSION GUARD ────────────────────────────────────────────────────────────
+(function() {
+    if (!localStorage.getItem('loggedIn')) {
+        window.location.href = 'index.html';
+        return;
+    }
+    const name = localStorage.getItem('userName') || localStorage.getItem('userEmail') || '';
+    document.getElementById('welcomeMsg').textContent = name ? `Hi, ${name}! 👋` : '';
+})();
+
+function logout() {
+    if (!confirm('Logout?')) return;
+    localStorage.removeItem('loggedIn');
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('userName');
+    window.location.href = 'index.html';
+}
+
+// ─── CART FUNCTIONS ───────────────────────────────────────────────────────────
+function loadCart() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const container = document.getElementById('cartItems');
+    const meta = document.getElementById('orderMeta');
+    container.innerHTML = '';
+    let total = 0;
+
+    if (cart.length === 0) {
+        container.innerHTML = '<div class="empty-msg">Your cart is empty. <a href="clothes.html" style="color:#0ff;">Start shopping!</a></div>';
+        document.getElementById('total').innerText = 'Total: ksh0';
+        meta.style.display = 'none';
+        return;
+    }
+
+    meta.style.display = 'block';
+
+    cart.forEach((item, idx) => {
+        total += item.price;
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `
+            <div class="item-name">${escapeHTML(item.name)}</div>
+            <div class="item-price">ksh${item.price.toLocaleString()}</div>
+            <button class="remove-btn" onclick="removeItem(${idx})">Remove</button>
+        `;
+        container.appendChild(div);
+    });
+
+    document.getElementById('total').innerText = `Total: ksh${total.toLocaleString()}`;
+}
+
+function escapeHTML(str) {
+    return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function removeItem(idx) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.splice(idx, 1);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    loadCart();
+}
+
+function clearCart() {
+    if (!confirm('Remove all items from cart?')) return;
+    localStorage.removeItem('cart');
+    loadCart();
+}
+
+function submitOrder() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    if (cart.length === 0) { alert('Your cart is empty!'); return; }
+
+    const name  = document.getElementById('deliveryName').value.trim();
+    const phone = document.getElementById('deliveryPhone').value.trim();
+    const addr  = document.getElementById('deliveryAddr').value.trim();
+
+    if (!name || !phone || !addr) {
+        alert('Please fill in your delivery details before submitting.');
+        return;
+    }
+
+    const email = localStorage.getItem('userEmail') || 'unknown';
+    const items = cart.map(i => `${i.name} — ksh${i.price}`).join('\n');
+    const total = cart.reduce((s,i) => s+i.price, 0);
+
+    const summary = `
+✅ ORDER CONFIRMED!
+
+Customer: ${name}
+Email: ${email}
+Phone: ${phone}
+Address: ${addr}
+
+Items:
+${items}
+
+Total: ksh${total.toLocaleString()}
+
+We'll contact you on ${phone} to confirm M-Pesa payment.
+Thank you for shopping with Outfit Store! 🛍️
+    `.trim();
+
+    alert(summary);
+    localStorage.removeItem('cart');
+    document.getElementById('deliveryName').value  = '';
+    document.getElementById('deliveryPhone').value = '';
+    document.getElementById('deliveryAddr').value  = '';
+    document.getElementById('deliveryNote').value  = '';
+    loadCart();
+}
+
+window.onload = loadCart;
+</script>
+</body>
+</html>

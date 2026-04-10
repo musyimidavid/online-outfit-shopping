@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Shoes - Outfit Store</title>
+<style>
+    body {
+        background-color: #0d0d0d;
+        color: #fff;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        min-height: 100vh;
+    }
+    nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #1a1a1a;
+        padding: 10px 20px;
+        box-shadow: 0 0 10px #0ff;
+    }
+    .dropdown { position: relative; display: inline-block; }
+    .dropbtn {
+        background-color: #0ff;
+        color: #000;
+        padding: 10px;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #222;
+        min-width: 160px;
+        z-index: 1;
+        border-radius: 4px;
+        box-shadow: 0 0 10px #0ff;
+    }
+    .dropdown-content a {
+        color: #fff;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+    .dropdown-content a:hover { background-color: #0ff; color: #000; }
+    .dropdown:hover .dropdown-content { display: block; }
+    .user-info {
+        color: #0ff;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .logout-btn {
+        background: transparent;
+        border: 1px solid #f0f;
+        color: #f0f;
+        padding: 5px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: bold;
+    }
+    .logout-btn:hover { background: #f0f; color: #000; }
+    h2 { text-align:center; margin-top:20px; color: #0ff; text-shadow: 0 0 10px #0ff; font-size: 2em; }
+    .items {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 20px;
+        gap: 20px;
+        justify-content: center;
+    }
+    .item {
+        background-color: #1a1a1a;
+        border: 2px solid #0ff;
+        border-radius: 8px;
+        padding: 15px;
+        width: calc(33% - 40px);
+        min-width: 240px;
+        box-shadow: 0 0 10px #0ff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transition: transform 0.3s ease;
+    }
+    .item:hover { transform: translateY(-5px); box-shadow: 0 0 20px #0ff; }
+    .item img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+    .item h3 { margin: 10px 0; color: #0ff; }
+    .item p  { margin: 5px 0; font-size: 1.1em; font-weight: bold; }
+    .item button {
+        background-color: #0ff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+        margin-top: auto;
+        transition: all 0.3s;
+    }
+    .item button:hover { background-color: #0cc; box-shadow: 0 0 10px #0ff; }
+    footer {
+        background-color: #1a1a1a;
+        padding: 10px 20px;
+        text-align: center;
+        box-shadow: 0 -2px 10px #0ff3;
+        margin-top: 40px;
+    }
+    .toast {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: #0ff;
+        color: #000;
+        padding: 14px 22px;
+        border-radius: 8px;
+        font-weight: bold;
+        box-shadow: 0 0 20px #0ff;
+        display: none;
+        z-index: 999;
+    }
+</style>
+</head>
+<body>
+
+<nav>
+    <div class="dropdown">
+        <button class="dropbtn">Menu</button>
+        <div class="dropdown-content">
+            <a href="homepage.html">Homepage</a>
+            <a href="shoes.html">Shoes</a>
+            <a href="clothes.html">Clothes</a>
+            <a href="cart.html">My Order</a>
+        </div>
+    </div>
+    <div class="user-info">
+        <span id="welcomeMsg"></span>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+</nav>
+
+<h2>👟 Shoes Collection</h2>
+
+<div class="items">
+
+    <div class="item">
+        <!-- Custom sneakers — Unsplash -->
+        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&auto=format&fit=crop&q=80" alt="AF1 Custom Sneakers" loading="lazy">
+        <h3>AF1 Custom Sneakers</h3>
+        <p>ksh 1500</p>
+        <button onclick="addToCart('AF1 Custom Sneakers', 1500)">Add to Cart</button>
+    </div>
+
+    <div class="item">
+        <!-- Jordan 4 style — Unsplash -->
+        <img src="https://images.unsplash.com/photo-1539185441755-769473a23570?w=400&auto=format&fit=crop&q=80" alt="Jordan 4" loading="lazy">
+        <h3>Jordan 4</h3>
+        <p>ksh 2500</p>
+        <button onclick="addToCart('Jordan 4', 2500)">Add to Cart</button>
+    </div>
+
+    <div class="item">
+        <!-- Blue sneakers — Unsplash -->
+        <img src="https://images.unsplash.com/photo-1584735175315-9d5df23be2c0?w=400&auto=format&fit=crop&q=80" alt="AF1 Custom Blue" loading="lazy">
+        <h3>AF1 Custom Blue</h3>
+        <p>ksh 2500</p>
+        <button onclick="addToCart('AF1 Custom Blue', 2500)">Add to Cart</button>
+    </div>
+
+    <div class="item">
+        <!-- Clogs / slides — Unsplash -->
+        <img src="https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=400&auto=format&fit=crop&q=80" alt="Summer Clogs" loading="lazy">
+        <h3>Summer Clogs</h3>
+        <p>ksh 1200</p>
+        <button onclick="addToCart('Summer Clogs', 1200)">Add to Cart</button>
+    </div>
+
+    <div class="item">
+        <!-- Women slides — Unsplash -->
+        <img src="https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=400&auto=format&fit=crop&q=80" alt="Women Slides" loading="lazy">
+        <h3>Puma Women Slides</h3>
+        <p>ksh 1230</p>
+        <button onclick="addToCart('Puma Women Slides', 1230)">Add to Cart</button>
+    </div>
+
+    <div class="item">
+        <!-- Flip flops — Unsplash -->
+        <img src="https://images.unsplash.com/photo-1603487742131-4160ec999306?w=400&auto=format&fit=crop&q=80" alt="Women Flops" loading="lazy">
+        <h3>Women Flops</h3>
+        <p>ksh 999</p>
+        <button onclick="addToCart('Women Flops', 999)">Add to Cart</button>
+    </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+    <p>© 2026 Outfit Store | Style Your Life</p>
+</footer>
+
+<script>
+// ─── SESSION GUARD ────────────────────────────────────────────────────────────
+(function() {
+    if (!localStorage.getItem('loggedIn')) {
+        window.location.href = 'index.html';
+        return;
+    }
+    const name = localStorage.getItem('userName') || localStorage.getItem('userEmail') || '';
+    document.getElementById('welcomeMsg').textContent = name ? `Hi, ${name}! 👋` : '';
+})();
+
+function logout() {
+    if (!confirm('Logout?')) return;
+    localStorage.removeItem('loggedIn');
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('userName');
+    window.location.href = 'index.html';
+}
+
+// ─── CART ─────────────────────────────────────────────────────────────────────
+function addToCart(name, price) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.push({ name, price });
+    localStorage.setItem('cart', JSON.stringify(cart));
+    showToast(`✅ ${name} added! ksh ${price}`);
+}
+
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.display = 'block';
+    setTimeout(() => { t.style.display = 'none'; }, 2800);
+}
+</script>
+</body>
+</html>
